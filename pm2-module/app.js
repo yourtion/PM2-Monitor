@@ -1,101 +1,51 @@
 var pmx = require('pmx');
-pmx.initModule({
+var rpc = require('pm2-axon-rpc');
+var axon = require('pm2-axon');
+
+var conf = pmx.initModule({
   widget: {
     logo: 'https://app.keymetrics.io/img/logo/keymetrics-300.png',
     theme: ['#141A1F', '#222222', '#3ff', '#3ff'],
     el : { probes: true, actions: true },
     block : { actions: false, issues: true, meta : true, main_probes: ['test-probe']},
   }
-}, function(err, conf) {
-
-  /**
-   * Module specifics like connecting to a database and
-   * displaying some metrics
-   */
-
-  /**
-   *                      Custom Metrics
-   *
-   * Let's expose some metrics that will be displayed into Keymetrics
-   *   For more documentation about metrics: http://bit.ly/1PZrMFB
-   */
-  var Probe = pmx.probe();
-
-  var value_to_inspect = 0;
-
-  /**
-   * .metric, .counter, .meter, .histogram are also available (cf doc)
-   */
-  var val = Probe.metric({
-    name : 'test-probe',
-    value : function() {
-      return value_to_inspect;
-    },
-    /**
-     * Here we set a default value threshold, to receive a notification
-     * These options can be overriden via Keymetrics or via pm2
-     * More: http://bit.ly/1O02aap
-     */
-    alert : {
-      mode     : 'threshold',
-      value    : 20,
-      msg      : 'test-probe alert!',
-      action   : function(val) {
-        // Besides the automatic alert sent via Keymetrics
-        // You can also configure your own logic to do something
-        console.log('Value has reached %d', val);
-      }
-    }
-  });
-
-  setInterval(function() {
-    // Then we can see that this value increase over the time in Keymetrics
-    value_to_inspect++;
-  }, 300);
-
-
-  /**
-   *                Simple Actions
-   *
-   *   Now let's expose some triggerable functions
-   *  Once created you can trigger this from Keymetrics
-   *
-   */
-  pmx.action('env', function(reply) {
-    return reply({
-      env: process.env
-    });
-  });
-
-  /**
-   *                 Scoped Actions
-   *
-   *     This are for long running remote function
-   * This allow also to res.emit logs to see the progress
-   *
-   **/
-  var spawn = require('child_process').spawn;
-
-  pmx.scopedAction('lsof cmd', function(options, res) {
-    var child = spawn('lsof', []);
-
-    child.stdout.on('data', function(chunk) {
-      chunk.toString().split('\n').forEach(function(line) {
-        /**
-         * Here we send logs attached to this command
-         */
-        res.send(line);
-      });
-    });
-
-    child.stdout.on('end', function(chunk) {
-      /**
-       * Then we emit end to finalize the function
-       */
-      res.end('end');
-    });
-
-  });
-
-
 });
+
+var PROCESS_NAME = 'pm2-monit-daemon';
+var PM2_ROOT_PATH = '';
+var Probe = pmx.probe();
+
+if (process.env.PM2_HOME)
+  PM2_ROOT_PATH = process.env.PM2_HOME;
+else if (process.env.HOME && !process.env.HOMEPATH)
+  PM2_ROOT_PATH = path.resolve(process.env.HOME, '.pm2');
+else if (process.env.HOME || process.env.HOMEPATH)
+  PM2_ROOT_PATH = path.resolve(process.env.HOMEDRIVE, process.env.HOME || process.env.HOMEPATH, '.pm2');
+
+// default: 30 secs
+var WORKER_INTERVAL = isNaN(parseInt(conf.workerInterval)) ? 30 * 1000 : parseInt(conf.workerInterval) * 1000;
+console.log(conf);
+
+// var sock = axon.socket('pull');
+
+// sock.connect('unix://'+ PM2_ROOT_PATH +'/pub.sock');
+
+// // var dataT = '';
+
+// sock.on('message', function (msg, data) {
+//   if(data.process.name === PROCESS_NAME) return;
+//   console.log(data);
+// });
+
+
+// var req = axon.socket('req');
+// var client = new rpc.Client(req);
+// req.connect('unix:///Users/yourtion/.pm2/rpc.sock');
+
+
+// client.call('getMonitorData',{}, function (err, n) {
+// console.log(JSON.stringify(n));
+// })
+// client.call('getSystemData', {}, function (err, n) {
+//   console.log(JSON.stringify(n));
+// })

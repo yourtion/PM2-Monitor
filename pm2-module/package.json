@@ -4,6 +4,8 @@
   "description": "PM2 Remote Monitor Daemon Module",
   "main": "app.js",
   "dependencies": {
+    "pm2-axon": "^3.0.2",
+    "pm2-axon-rpc": "^0.4.5",
     "pmx": "beta"
   },
   "repository": {
@@ -11,8 +13,7 @@
     "url": "https://github.com:yourtion/PM2-Monitor.git"
   },
   "config": {
-    "send_interval": 30,
-    "socket_server": "127.0.0.1:3333"
+    "workerInterval": 30
   },
   "apps": [
     {
