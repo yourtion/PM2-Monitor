@@ -1,0 +1,26 @@
+{
+  "name": "pm2-monitor",
+  "version": "0.2.0",
+  "description": "PM2 Monitor Module",
+  "main": "app.js",
+  "dependencies": {
+    "pmx": "beta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com:yourtion/PM2-Monitor.git"
+  },
+  "config": {
+    "send_interval": 30,
+    "socket_server": "127.0.0.1:3333"
+  },
+  "apps": [
+    {
+      "merge_logs": true,
+      "max_memory_restart": "200M",
+      "script": "app.js"
+    }
+  ],
+  "author": "Yourtion <yourtion@gmail.com",
+  "license": "MIT"
+}
