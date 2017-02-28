@@ -42,13 +42,10 @@ if(conf.server) {
     sendSystemData();
   });
 
-  // 为客户端添加“data”事件处理函数
-  // data是服务器发回的数据
   SOCKET.on('data', function(data) {
     debug('DATA:' + data);
   });
-
-  // 为客户端添加“close”事件处理函数
+  
   SOCKET.on('close', function() {
     debug('Connection closed');
   });
