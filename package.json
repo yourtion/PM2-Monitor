@@ -9,9 +9,12 @@
     "pmx": "beta"
   },
   "devDependencies": {
-    "debug": "^2.6.1"
+    "debug": "^2.6.1",
+    "eslint": "^3.16.1",
+    "eslint-config-guo": "^0.3.0"
   },
   "scripts": {
+    "lint": "eslint index.js lib --fix",
     "pm2:u": "pm2 uninstall pm2-monit-daemon",
     "pm2:i": "pm2 install .",
     "pm2:set": "pm2 set pm2-monit-daemon:server 127.0.0.1:6969",
