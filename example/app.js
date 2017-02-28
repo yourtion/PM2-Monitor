@@ -7,7 +7,20 @@ net.createServer(function(sock) {
   console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
 
   sock.on('data', function(data) {
-    console.log('DATA ' + sock.remoteAddress + ': ' + data);
+    console.log(new Date());
+    var json = JSON.parse(data);
+    // console.log(json);
+    if(json.type === 'system') {
+      console.log(json.data.system);
+    }
+    if(json.type === 'monit') {
+      // console.log(json.data);
+      for(var item of json.data) {
+        console.log(item.pid, item.name);
+        console.log(item.pm2_env.axm_monitor);
+        console.log(item.monit);
+      }
+    }
   });
 
   sock.on('close', function(data) {

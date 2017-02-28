@@ -19,10 +19,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:yourtion/pm2-monit-daemon.git"
+    "url": "https://github.com:yourtion/pm2-monit-daemon.git"
   },
   "config": {
-    "workerInterval": 5
+    "workerInterval": 5,
+    "server": ""
   },
   "apps": [
     {
