@@ -5,8 +5,14 @@ var net = require('net');
 var utils = require('./utils');
 var debug = utils.debug('model');
 
+var PROCESS_NAME = 'pm2-monit-daemon';
+var PM2_ROOT_PATH = utils.getPM2home();
+var RPC_PATH = 'unix://' + PM2_ROOT_PATH + '/rpc.sock';
+var PUB_PATH = 'unix://'+ PM2_ROOT_PATH +'/pub.sock'
+var Probe = pmx.probe();
 var req = axon.socket('req');
 var rpcClient = new rpc.Client(req);
+var SOCKET = new net.Socket();
 
 var conf = pmx.initModule({
   widget: {
@@ -17,47 +23,38 @@ var conf = pmx.initModule({
   }
 });
 
-var PROCESS_NAME = 'pm2-monit-daemon';
-var PM2_ROOT_PATH = utils.getPM2home();
-var Probe = pmx.probe();
-
-var SOCKET = new net.Socket();
-
 // default: 30 secs
 var WORKER_INTERVAL = isNaN(parseInt(conf.workerInterval)) ? 30 * 1000 : parseInt(conf.workerInterval) * 1000;
+
+SOCKET.on('connect' ,function() {
+  debug('CONNECTED TO:' + SOCKET.remoteAddress + ':' + SOCKET.remotePort);
+  req.connect(RPC_PATH);
+  sendSystemData();
+});
+
+SOCKET.on('data', function(data) {
+  debug('DATA:' + data);
+});
+
+SOCKET.on('close', function() {
+  debug('Connection closed');
+});
+
+SOCKET.on('error', function(error) {
+  debug('ERROR:' + error);
+});
 
 function connectServer(server, callback) {
   var SERVER = conf.server.split(':');
   if(SERVER.length !== 2) return;
   var HOST = SERVER[0];
   var PORT = SERVER[1];
-  SOCKET.connect(6969, '127.0.0.1', callback);
-}
-
-if(conf.server) {
-  connectServer(conf.server);
-    SOCKET.on('connect' ,function() {
-    debug('CONNECTED TO:' + SOCKET.remoteAddress + ':' + SOCKET.remotePort);
-    req.connect('unix://' + PM2_ROOT_PATH + '/rpc.sock');
-    sendSystemData();
-  });
-
-  SOCKET.on('data', function(data) {
-    debug('DATA:' + data);
-  });
-  
-  SOCKET.on('close', function() {
-    debug('Connection closed');
-  });
-
-  SOCKET.on('error', function(error) {
-    debug('ERROR:' + error);
-  });
+  SOCKET.connect(PORT, HOST, callback);
 }
 
 function sendSystemData() {
   if(SOCKET.destroyed) return;
-  rpcClient.call('getSystemData',{}, function (err, data) {
+  rpcClient.call('getSystemData', {}, function (err, data) {
     if(err) return;
     debug('getSystemData', JSON.stringify(data));
     var monit = { type: 'system', data};
@@ -67,7 +64,7 @@ function sendSystemData() {
 
 function sendMonitorData() {
   if(SOCKET.destroyed) return;
-  rpcClient.call('getMonitorData',{}, function (err, data) {
+  rpcClient.call('getMonitorData', {}, function (err, data) {
     if(err) return;
     debug('getMonitorData', JSON.stringify(data));
     var monit = { type: 'monit', data};
@@ -75,9 +72,12 @@ function sendMonitorData() {
   })
 }
 
+if(conf.server) {
+  connectServer(conf.server);
+}
+
 setInterval(function(){
-  console.log(new Date());
-  if(SOCKET.destroyed && conf.server) {
+  if(SOCKET.destroyed) {
     connectServer(conf.server, sendMonitorData);
   } else {
     sendMonitorData();
