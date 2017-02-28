@@ -1,6 +1,6 @@
 {
   "name": "pm2-monit-daemon",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "PM2 Remote Monitor Daemon Module",
   "main": "index.js",
   "dependencies": {
