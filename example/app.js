@@ -7,7 +7,7 @@ net.createServer(function(sock) {
   console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
 
   sock.on('data', function(data) {
-    console.log(new Date());
+    console.log(new Date(), data.length);
     var json = JSON.parse(data);
     // console.log(json);
     if(json.type === 'system') {

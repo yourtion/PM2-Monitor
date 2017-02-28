@@ -78,9 +78,9 @@ if(conf.server) {
 
 setInterval(function(){
   if(SOCKET.destroyed) {
-    connectServer(conf.server, sendMonitorData);
+    connectServer(conf.server, sendSystemData);
   } else {
-    sendMonitorData();
+    sendSystemData();
   }
 }, WORKER_INTERVAL);
 
