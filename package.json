@@ -2,24 +2,33 @@
   "name": "pm2-monit-daemon",
   "version": "0.1.0",
   "description": "PM2 Remote Monitor Daemon Module",
-  "main": "app.js",
+  "main": "index.js",
   "dependencies": {
     "pm2-axon": "^3.0.2",
     "pm2-axon-rpc": "^0.4.5",
     "pmx": "beta"
   },
+  "devDependencies": {
+    "debug": "^2.6.1"
+  },
+  "scripts": {
+    "pm2:u": "pm2 uninstall pm2-monit-daemon",
+    "pm2:i": "pm2 install .",
+    "pm2:set": "pm2 set pm2-monit-daemon:server 127.0.0.1:6969",
+    "debug": "npm run pm2:u && export DEBUG=PM2-Monit:module* && npm run pm2:i && npm run pm2:set && pm2 logs"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com:yourtion/PM2-Monitor.git"
+    "url": "https://github.com:yourtion/pm2-monit-daemon.git"
   },
   "config": {
-    "workerInterval": 30
+    "workerInterval": 5
   },
   "apps": [
     {
       "merge_logs": true,
       "max_memory_restart": "200M",
-      "script": "app.js"
+      "script": "index.js"
     }
   ],
   "author": "Yourtion <yourtion@gmail.com",
