@@ -2,7 +2,8 @@ var pmx = require('pmx');
 var rpc = require('pm2-axon-rpc');
 var axon = require('pm2-axon');
 var net = require('net');
-var debug = require('debug')('PM2-Monit:module');
+var utils = require('./utils');
+var debug = utils.debug('model');
 
 var req = axon.socket('req');
 var rpcClient = new rpc.Client(req);
@@ -17,17 +18,10 @@ var conf = pmx.initModule({
 });
 
 var PROCESS_NAME = 'pm2-monit-daemon';
-var PM2_ROOT_PATH = '';
+var PM2_ROOT_PATH = utils.getPM2home();
 var Probe = pmx.probe();
 
 var SOCKET = new net.Socket();
-
-if (process.env.PM2_HOME)
-  PM2_ROOT_PATH = process.env.PM2_HOME;
-else if (process.env.HOME && !process.env.HOMEPATH)
-  PM2_ROOT_PATH = path.resolve(process.env.HOME, '.pm2');
-else if (process.env.HOME || process.env.HOMEPATH)
-  PM2_ROOT_PATH = path.resolve(process.env.HOMEDRIVE, process.env.HOME || process.env.HOMEPATH, '.pm2');
 
 // default: 30 secs
 var WORKER_INTERVAL = isNaN(parseInt(conf.workerInterval)) ? 30 * 1000 : parseInt(conf.workerInterval) * 1000;

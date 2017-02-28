@@ -15,11 +15,11 @@
     "pm2:u": "pm2 uninstall pm2-monit-daemon",
     "pm2:i": "pm2 install .",
     "pm2:set": "pm2 set pm2-monit-daemon:server 127.0.0.1:6969",
-    "debug": "npm run pm2:u && export DEBUG=PM2-Monit:module* && npm run pm2:i && npm run pm2:set && pm2 logs"
+    "debug": "npm run pm2:u && export DEBUG=PM2-Monit:* && npm run pm2:i && npm run pm2:set && pm2 logs"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com:yourtion/pm2-monit-daemon.git"
+    "url": "git+https://github.com:yourtion/pm2-monit-daemon.git"
   },
   "config": {
     "workerInterval": 5
