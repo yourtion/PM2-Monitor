@@ -8,17 +8,18 @@ net.createServer(function (sock) {
 
   sock.on('data', function (data) {
     console.log(new Date(), data.length);
+    console.log('DATA', data);
     const json = JSON.parse(data);
-    // console.log(json);
+    console.log(json);
     if(json.type === 'system') {
-      console.log(json.data.system);
+      // console.log(json.data.system);
     }
     if(json.type === 'monit') {
       // console.log(json.data);
       for(const item of json.data) {
-        console.log(item.pid, item.name);
-        console.log(item.pm2_env.axm_monitor);
-        console.log(item.monit);
+        // console.log(item.pid, item.name);
+        // console.log(item.pm2_env.axm_monitor);
+        // console.log(item.monit);
       }
     }
   });
