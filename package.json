@@ -6,7 +6,7 @@
   "dependencies": {
     "pm2-axon": "^3.0.2",
     "pm2-axon-rpc": "^0.4.5",
-    "pmx": "beta"
+    "pmx": "latest"
   },
   "devDependencies": {
     "debug": "^2.6.1",
@@ -31,10 +31,10 @@
   "apps": [
     {
       "merge_logs": true,
-      "max_memory_restart": "200M",
+      "max_memory_restart": "100M",
       "script": "index.js"
     }
   ],
-  "author": "Yourtion <yourtion@gmail.com",
+  "author": "Yourtion <yourtion@gmail.com>",
   "license": "MIT"
 }
