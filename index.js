@@ -12,7 +12,7 @@ pmx.initModule({
 
 pmx.configureModule({
   human_info: [
-    [ 'Git', 'https://github.com:yourtion/pm2-monit-daemon.git' ],
+    [ 'Git', 'https://github.com/yourtion/pm2-monit-daemon.git' ],
     [ 'Comment', 'pm2 set pm2-monit-daemon:server IP:PORT' ],
   ],
 });
