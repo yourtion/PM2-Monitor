@@ -3,7 +3,7 @@ pmx.initModule({
   widget: {
     logo: 'https://app.keymetrics.io/img/logo/keymetrics-300.png',
     theme: [ '#141A1F', '#222222', '#3ff', '#3ff' ],
-    el: { probes: true, actions: true },
+    el: { probes: true, actions: false },
     block: { actions: false, issues: true, meta: true, main_probes: [ 'test-probe' ]},
   },
 }, function (_err, conf) {

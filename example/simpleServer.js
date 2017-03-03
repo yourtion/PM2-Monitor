@@ -7,12 +7,12 @@ net.createServer(function (sock) {
   console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
 
   sock.on('data', function (data) {
-    console.log(new Date(), data.length);
-    console.log('DATA', data);
+    console.log(Date.now(), data.length);
+    // console.log('DATA', data);
     const json = JSON.parse(data);
-    console.log(json);
+    // console.log(json);
     if(json.type === 'system') {
-      // console.log(json.data.system);
+      console.log(json.data.processes);
     }
     if(json.type === 'monit') {
       // console.log(json.data);
