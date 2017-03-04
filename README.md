@@ -1,5 +1,7 @@
 # PM2-Monitor
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/yourtion/pm2-monit-daemon.svg)](https://greenkeeper.io/)
+
 A simple monitor for node pm2. Send app info from each pm2 server
 
 ```bash
