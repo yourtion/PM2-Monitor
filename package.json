@@ -9,9 +9,9 @@
     "pmx": "latest"
   },
   "devDependencies": {
-    "debug": "^2.6.1",
-    "eslint": "^3.16.1",
-    "eslint-config-guo": "^0.3.0"
+    "debug": "^2.6.8",
+    "eslint": "^4.1.1",
+    "eslint-config-guo": "^0.4.0"
   },
   "scripts": {
     "lint": "eslint index.js lib --fix",
